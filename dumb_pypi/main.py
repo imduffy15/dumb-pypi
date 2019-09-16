@@ -24,6 +24,7 @@ import distlib.wheel
 import jinja2
 import packaging.utils
 import packaging.version
+import urllib.parse
 
 
 jinja_env = jinja2.Environment(
@@ -127,7 +128,7 @@ class Package(NamedTuple):
 
     def url(self, base_url: str, *, include_hash: bool = True) -> str:
         hash_part = f'#{self.hash}' if self.hash and include_hash else ''
-        return f'{base_url.rstrip("/")}/{self.filename}{hash_part}'
+        return f'{base_url.rstrip("/")}/{urllib.parse.quote(self.filename)}{hash_part}'
 
     def json_info(self, base_url: str) -> Dict[str, Any]:
         ret: Dict[str, Any] = {
